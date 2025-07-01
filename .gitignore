@@ -4,3 +4,4 @@ cdx
 crawls.mk
 *.xz
 *.gzip
+*.gz

@@ -58,8 +58,8 @@ def generate_makefile(matches):
         full_url = f"https://data.commoncrawl.org{path}"
         collections.append((name, full_url))
     
-    # All target
-    all_targets = " ".join([f"{name}.tsv.gz" for name, _ in collections])
+    # All target (reversed to process newest first)
+    all_targets = " ".join([f"{name}.tsv.gz" for name, _ in reversed(collections)])
     print(f"all: {all_targets}")
     print()
     
