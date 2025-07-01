@@ -1,8 +1,13 @@
 # tldarc
 
 Let's make a list of domains, so we don't have to go cap in hand to registrars
-for zone files, sign agreements and pay themmoney when we don't even care about
+for zone files, sign agreements and pay them money when we don't even care about
 most of them anyway and don't want to agree to keep things secret.
+
+## Current state
+
+* Download commoncrawl indexes and extract domain names
+* Run cert
 
 ## Data source ideas
 
@@ -35,24 +40,3 @@ most of them anyway and don't want to agree to keep things secret.
 * Maybe generic forum extractors to get domain at time by looking for links
 * Write a fast C program that extracts domains from text in stdin, and pump into
   it.
-
-## Thoughts on gTLDs
-
-* Need to start with a gTLD list, because they vary in sizes.to.the.gtld
-* Not sure if gTLDs have an end date, but they do have a start date. Have any
-  gTLDs been removed due to war or whatever?
-* Have these changed over time? Are subdomains flexible too? Like I know we
-  have "police.uk" now, which we never used to have. Dunno if we can query
-  `*.uk.`, but pretty sure we can't query `*.co.uk` and don't know if this will
-  work across all domains.
-* There may be a way to get these automatically, or might not. We might need
-  to just grab all subdomains from various sources and sort them by reverse
-  sort order, then infer which ones are orgs and which ones are held by nation
-  states.
-
-## CLAUDE
-
-Help me out here. Discuss the above and we can work together on a plan. Let's
-not steam ahead into solutionizing before we have a modular system worked out.
-
-
