@@ -1,5 +1,6 @@
 *.tsv
 *.txt
-extract_cdx
+cdx
 crawls.mk
 *.xz
+*.gzip

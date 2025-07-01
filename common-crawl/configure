@@ -50,14 +50,10 @@ echo
 echo "✅ All dependencies found!"
 echo
 
-# Build the C extractor
-echo "Building C extractor..."
-make clean && make
-echo
 
 # Generate crawls makefile
 echo "Generating crawls.mk..."
-./generate_crawls_mk.py > crawls.mk
+./prep_make.py > crawls.mk
 echo "✅ Generated crawls.mk with $(grep -c '.tsv:' crawls.mk) targets"
 
 echo
