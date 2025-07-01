@@ -2,12 +2,20 @@ CC = gcc
 CFLAGS = -O3 -march=native -pipe
 TARGET = extract_cdx
 
-all: $(TARGET)
+# Include generated crawls makefile
+include crawls.mk
 
+# Build the C extractor
 $(TARGET): extract_cdx.c
 	$(CC) $(CFLAGS) -o $@ $<
 
-clean:
-	rm -f $(TARGET)
+# Add extract_cdx dependency to all .tsv targets from crawls.mk
+%.tsv: $(TARGET)
 
-.PHONY: all clean
+clean:
+	rm -f $(TARGET) *.tsv *.tsv.gz
+
+distclean: clean
+	rm -f crawls.mk
+
+.PHONY: all clean distclean
