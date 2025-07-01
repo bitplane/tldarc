@@ -11,7 +11,7 @@ $(TARGET): cdx.c
 
 # Pattern rules for compression
 %.tsv.gz: %.tsv
-	gzip -9 $<
+	pigz -9 $<
 
 # Add cdx dependency to all .tsv targets from crawls.mk
 %.tsv: $(TARGET)
