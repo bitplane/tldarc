@@ -11,7 +11,7 @@ $(TARGET): cdx.c
 
 # Pattern rules for compression
 %.tsv.gz: %.tsv
-	pigz -9 $<
+	pigz -9 -f $<
 
 # Add cdx dependency to all .tsv targets from crawls.mk
 %.tsv: $(TARGET)
@@ -22,4 +22,8 @@ clean:
 distclean: clean
 	rm -f crawls.mk
 
-.PHONY: all clean distclean
+test_cdx: $(TARGET)
+	@echo "Running cdx tests..."
+	@bash -c 'diff -u test/expected_domains.txt <(cat test/test_domains.txt | ./cdx) && echo "All tests passed!" || { echo "Tests failed! See differences above."; exit 1; }'
+
+.PHONY: all clean distclean test_cdx

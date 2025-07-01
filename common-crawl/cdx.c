@@ -4,40 +4,33 @@
 #include <stdlib.h>
 
 #define BUFFER_SIZE 65536
-#define DEBUG(fmt, ...) fprintf(stderr, "DEBUG: " fmt "\n", ##__VA_ARGS__)
-
-int is_all_digits(const char *start, const char *end) {
-    if (start >= end) return 0;
-    for (const char *p = start; p < end; p++) {
-        if (!isdigit(*p)) return 0;
-    }
-    return 1;
-}
 
 int main() {
     char buffer[BUFFER_SIZE];
-    char raw_domain[256];
+    char domain[256];
     
     while (fgets(buffer, BUFFER_SIZE, stdin)) {
         char *p = buffer;
         
-        // Skip first field (up to first space)
+        // Step 1: Skip to timestamp (after first space)
         while (*p && *p != ' ') p++;
         if (!*p) continue;
         p++; // skip space
         
-        // Extract timestamp (first 6 chars for YYYYMM)
-        char *timestamp = p;
-        p[6] = '\0'; // Null terminate at 6th position
-        int timestamp_val = atoi(timestamp);
-        if (timestamp_val < 197000) continue; // Skip invalid timestamps
-        p += 7; // Move past timestamp and null terminator
+        // Step 2: Extract timestamp (YYYYMM)
+        if (p + 6 > buffer + strlen(buffer)) continue;
+        char timestamp[7];
+        memcpy(timestamp, p, 6);
+        timestamp[6] = '\0';
         
-        // Find "url" then look for "//" after it
+        // Validate timestamp
+        int ts = atoi(timestamp);
+        if (ts < 197000) continue;
+        
+        // Step 3: Find URL
         char *url_pos = strstr(p, "\"url\"");
         if (!url_pos) continue;
         
-        // Find "//" after the "url" 
         char *proto_end = strstr(url_pos, "://");
         if (!proto_end) continue;
         proto_end += 3;
@@ -49,51 +42,90 @@ int main() {
             proto_end = at_sign + 1;
         }
         
-        // Extract raw domain (up to port, path, query, or end quote)
-        char *domain_ptr = raw_domain;
-        char *p2 = proto_end;
-        while (*p2 && *p2 != '/' && *p2 != ':' && *p2 != '?' && *p2 != '#' && *p2 != '"' && (domain_ptr - raw_domain) < 255) {
-            *domain_ptr++ = tolower(*p2++);
+        // Step 4: Extract and process domain in single pass
+        char *domain_ptr = domain;
+        char *seg_start = domain;
+        char *a = domain;
+        char *b = domain;
+        char *c = domain;
+        int has_numeric_segment = 0;
+        
+        // Skip IPv6 addresses
+        if (*proto_end == '[') {
+            continue;
+        }
+        
+        // Copy domain while tracking segments
+        char *src = proto_end;
+        while (*src && *src != '/' && *src != ':' && *src != '?' && 
+               *src != '#' && *src != '"' && *src != ';' && 
+               (domain_ptr - domain) < 255) {
+            
+            if (*src == '.') {
+                // Check if current segment is all numeric
+                int all_digit = 1;
+                for (char *check = seg_start; check < domain_ptr; check++) {
+                    if (!isdigit(*check)) {
+                        all_digit = 0;
+                        break;
+                    }
+                }
+                if (all_digit && seg_start < domain_ptr) {
+                    has_numeric_segment = 1;
+                }
+                
+                // Update segment pointers
+                a = b;
+                b = c;
+                c = domain_ptr + 1;
+                seg_start = domain_ptr + 1;
+            }
+            
+            *domain_ptr++ = tolower(*src++);
         }
         *domain_ptr = '\0';
         
-        if (!raw_domain[0]) continue;
+        // Skip if numeric segment found
+        if (has_numeric_segment) continue;
         
-        // Check for numeric segments and apply smart domain algorithm
-        char *start = raw_domain;
-        char *pos1 = raw_domain;
-        char *pos2 = raw_domain;
-        int has_numeric_segment = 0;
-        
-        // Check each segment for being all digits
-        char *seg_start = raw_domain;
-        for (char *c = raw_domain; *c; c++) {
-            if (*c == '.' || *(c+1) == '\0') {
-                char *seg_end = (*c == '.') ? c : c + 1;
-                if (is_all_digits(seg_start, seg_end)) {
-                    has_numeric_segment = 1;
+        // Check final segment for numeric
+        if (seg_start < domain_ptr) {
+            int all_digit = 1;
+            for (char *check = seg_start; check < domain_ptr; check++) {
+                if (!isdigit(*check)) {
+                    all_digit = 0;
                     break;
                 }
-                seg_start = c + 1;
+            }
+            if (all_digit) continue;
+        }
+        
+        // Determine output based on segment positions and lengths
+        char *output_start;
+        
+        if (c == domain) {
+            // No dots found, single segment
+            output_start = domain;
+        } else if (b == domain) {
+            // Only one dot found (two segments)
+            output_start = domain;
+        } else {
+            // At least two dots (three or more segments)
+            // Calculate length of segment b
+            char *b_end = c - 1; // c points after the dot
+            int b_len = b_end - b;
+            
+            if (b_len <= 3) {
+                // b is short, include a.b.c
+                output_start = a;
+            } else {
+                // b is long, just b.c
+                output_start = b;
             }
         }
         
-        if (has_numeric_segment) continue; // Skip domains with numeric segments
-        
-        // Apply position tracking algorithm to find significant domain part
-        seg_start = raw_domain;
-        for (char *c = raw_domain; *c; c++) {
-            if (*c == '.') {
-                if (c - seg_start > 4) { // Current segment is >4 chars
-                    start = seg_start;
-                }
-                seg_start = c + 1; // Start of next segment
-            }
-        }
-        
-        // Null terminate domain in place at the calculated position
-        if (start[0]) {
-            printf("%s\t%s\n", timestamp, start);
+        if (*output_start) {
+            printf("%s\t%s\n", timestamp, output_start);
         }
     }
     

@@ -1,0 +1,28 @@
+test 20150314123456 {"url":"https://example.com/"}
+test 20180523091122 {"url": "https://a.b.c.d.example.com/path"}
+test 20190812153045 {"url":"http://03p33.4jvh.xyz/"}
+test 20201201000000 {"url": "http://4jvh.xyz/test"}
+test 20210415180930 {"url":"https://google.com/"}
+test 20220228235959 {"url":"https://sub.google.com/"}
+test 20230701120000 {"url": "http://many.sub.domains.google.com/"}
+test 20240101000001 {"url":"https://verylongsubdomain.example.com/"}
+test 20241215143022 {"url": "https://short.co/"}
+test 20250101090000 {"url":"https://a.co/"}
+test 20190315141500 {"url": "http://192.168.1.1/"}
+test 20200620183045 {"url":"https://test123.456.com/"}
+test 20210930225500 {"url": "https://onlytld.museum/"}
+test 20221112071530 {"url":"http://many.levels.of.subdomains.here.example.com/"}
+test 20230405163000 {"url": "https://user:pass@example.com/"}
+test 20240808080808 {"url":"https://example.com:8080/path"}
+test 20250112134500 {"url": "https://UPPERCASE.COM/"}
+test 20180101010101 {"url":"http://sub1.sub2.s.example.com/"}
+test 20170615120000 {"url": "http://10.0.0.1:8080/admin"}
+test 20160229000000 {"url":"https://[2001:db8::1]/"}
+test 20151231235959 {"url": "http://example.co.uk/"}
+test 20141010101010 {"url":"https://test.example.com:443/"}
+test 20131313131313 {"url": "http://example.org/path?query=1"}
+test 20121212121212 {"url":"http://subdomain.example.net/"}
+test 20110101000000 {"url": "http://example.com;"}
+test 20100705142030 {"url":"https://www.example.com;"}
+test 20090909090909 {"url": "http://192.168.1.1:80;"}
+test 20080808080808 {"url":"https://example.info;"}
