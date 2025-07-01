@@ -58,8 +58,20 @@ def generate_makefile(matches):
         full_url = f"https://data.commoncrawl.org{path}"
         collections.append((name, full_url))
     
-    # All target (reversed to process newest first)
-    all_targets = " ".join([f"{name}.tsv.gz" for name, _ in reversed(collections)])
+    # All target (sorted by numeric tokens to process newest first)
+    def sort_key(item):
+        name = item[0]
+        # Remove extension and split on dash
+        parts = name.replace('.tsv.gz', '').split('-')
+        # Extract numeric tokens in order
+        nums = []
+        for part in parts:
+            if part.isdigit():
+                nums.append(int(part))
+        return tuple(nums) if nums else (0,)
+    
+    sorted_collections = sorted(collections, key=sort_key, reverse=True)
+    all_targets = " ".join([f"{name}.tsv.gz" for name, _ in sorted_collections])
     print(f"all: {all_targets}")
     print()
     
