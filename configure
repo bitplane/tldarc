@@ -1,0 +1,69 @@
+#!/bin/bash
+
+set -e
+
+echo "Checking dependencies for tldarc..."
+
+# Check required tools
+MISSING=""
+
+check_tool() {
+    if ! command -v "$1" &> /dev/null; then
+        MISSING="$MISSING $1"
+        echo "  ✗ $1 - not found"
+    else
+        echo "  ✓ $1 - found"
+    fi
+}
+
+echo
+echo "Required tools:"
+check_tool curl
+check_tool aria2c  
+check_tool pigz
+check_tool python3
+check_tool parallel
+check_tool make
+check_tool gcc
+
+echo
+echo "Required Python modules:"
+if python3 -c "import sys" 2>/dev/null; then
+    echo "  ✓ python3 - working"
+else
+    MISSING="$MISSING python3-working"
+    echo "  ✗ python3 - not working properly"
+fi
+
+if [[ -n "$MISSING" ]]; then
+    echo
+    echo "❌ Missing dependencies:$MISSING"
+    echo
+    echo "Install with:"
+    echo "  Ubuntu/Debian: sudo apt install curl aria2 pigz python3 parallel make gcc"
+    echo "  CentOS/RHEL:   sudo yum install curl aria2 pigz python3 parallel make gcc"
+    echo "  macOS:         brew install curl aria2 pigz python3 parallel make gcc"
+    exit 1
+fi
+
+echo
+echo "✅ All dependencies found!"
+echo
+
+# Build the C extractor
+echo "Building C extractor..."
+make clean && make
+echo
+
+# Generate crawls makefile
+echo "Generating crawls.mk..."
+./generate_crawls_mk.py > crawls.mk
+echo "✅ Generated crawls.mk with $(grep -c '.tsv:' crawls.mk) targets"
+
+echo
+echo "🚀 Configuration complete!"
+echo
+echo "Usage:"
+echo "  make                    # Build everything"  
+echo "  make CC-MAIN-2024-10    # Process specific crawl"
+echo "  make clean              # Clean generated files"

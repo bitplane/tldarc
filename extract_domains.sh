@@ -12,7 +12,11 @@ process_url_list() {
     while read -r path; do
         if [[ "$path" == *cdx-*.gz ]]; then
             echo "Processing $path..." >&2
-            curl -s "${base_url}${path}" | pigz -dc | extract_cdx_domains | python3 -c "import sys; sys.stdout.write('\\n'.join(set(sys.stdin.read().strip().split('\\n')))+'\\n')"
+            curl -s "${base_url}${path}" | \
+                pigz -dc | \
+                extract_cdx_domains | \
+                pv | \
+                python3 -c "import sys; sys.stdout.write('\\n'.join(set(sys.stdin.read().strip().split('\\n')))+'\\n')"
         fi
     done
 }
