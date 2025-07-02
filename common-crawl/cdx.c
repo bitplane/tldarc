@@ -7,7 +7,7 @@
 
 int main() {
     char buffer[BUFFER_SIZE];
-    char domain[256];
+    char domain[2048];
     
     while (fgets(buffer, BUFFER_SIZE, stdin)) {
         char *p = buffer;
@@ -59,7 +59,7 @@ int main() {
         char *src = proto_end;
         while (*src && *src != '/' && *src != ':' && *src != '?' && 
                *src != '#' && *src != '"' && *src != ';' && 
-               (domain_ptr - domain) < 255) {
+               (domain_ptr - domain) < 2047) {
             
             if (*src == '.') {
                 // Check if current segment is all numeric

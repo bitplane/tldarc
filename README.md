@@ -17,12 +17,8 @@ search, first seen, last seen).
 ## Current plan
 
 - [ ] Feed seen and domain data into a database
-- [ ] Get tld data and use as a filter
 - [x] Download commoncrawl indexes and extract domain names
 - [ ] Stream in certificate transparency data
   - [ ] Leave it running, publish periodically
 - [ ] Publish raw data files
-  - [ ] hf
-  - [ ] gh
-  - [ ] ia
-
+  - [ ] IA and link to it

@@ -26,4 +26,6 @@ test_cdx: $(TARGET)
 	@echo "Running cdx tests..."
 	@bash -c 'diff -u test/expected_domains.txt <(cat test/test_domains.txt | ./cdx) && echo "All tests passed!" || { echo "Tests failed! See differences above."; exit 1; }'
 
-.PHONY: all clean distclean test_cdx
+test: test_cdx
+
+.PHONY: all clean distclean test_cdx test

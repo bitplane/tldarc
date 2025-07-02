@@ -26,3 +26,5 @@ test 20110101000000 {"url": "http://example.com;"}
 test 20100705142030 {"url":"https://www.example.com;"}
 test 20090909090909 {"url": "http://192.168.1.1:80;"}
 test 20080808080808 {"url":"https://example.info;"}
+test 20250102100000 {"url":"http://artisticflooring.com.au/test"}
+test 20250103100000 {"url":"http://www.bbc.co.uk./news"}
