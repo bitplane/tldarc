@@ -5,6 +5,12 @@
 
 #define BUFFER_SIZE 65536
 
+// Check if character is valid in a domain name
+#define IS_DOMAIN_CHAR(c) ((c) == '.' || (c) == '-' || (c) > 127 || \
+                           ((c) >= '0' && (c) <= '9') || \
+                           ((c) >= 'A' && (c) <= 'Z') || \
+                           ((c) >= 'a' && (c) <= 'z'))
+
 int main() {
     char buffer[BUFFER_SIZE];
     char domain[2048];
@@ -57,11 +63,14 @@ int main() {
         
         // Copy domain while tracking segments
         char *src = proto_end;
-        while (*src && *src != '/' && *src != ':' && *src != '?' && 
-               *src != '#' && *src != '"' && *src != ';' && 
-               (domain_ptr - domain) < 2047) {
+        while (*src && IS_DOMAIN_CHAR(*src) && (domain_ptr - domain) < 2047) {
             
             if (*src == '.') {
+                // Check if next character is valid domain char, if not stop here
+                if (!IS_DOMAIN_CHAR(*(src + 1))) {
+                    break;
+                }
+                
                 // Check if current segment is all numeric
                 int all_digit = 1;
                 for (char *check = seg_start; check < domain_ptr; check++) {
@@ -84,6 +93,11 @@ int main() {
             *domain_ptr++ = tolower(*src++);
         }
         *domain_ptr = '\0';
+        
+        // Strip trailing dot if present
+        if (domain_ptr > domain && *(domain_ptr - 1) == '.') {
+            *(--domain_ptr) = '\0';
+        }
         
         // Skip if numeric segment found
         if (has_numeric_segment) continue;
