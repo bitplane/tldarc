@@ -28,3 +28,4 @@ test 20090909090909 {"url": "http://192.168.1.1:80;"}
 test 20080808080808 {"url":"https://example.info;"}
 test 20250102100000 {"url":"http://artisticflooring.com.au/test"}
 test 20250103100000 {"url":"http://www.bbc.co.uk./news"}
+ar,com,xn--cabaaslito-w9a)/robots.txt 20250620064424 {"url": "https://www.caba%C3%B1aslito.com.ar/robots.txt", "mime": "text/html", "mime-detected": "text/html", "status": "404", "digest": "VAQZB7CTBQTFVJAKAROCC5YNSZ7UOZ5Y", "length": "770", "offset": "1086042", "filename": "crawl-data/CC-MAIN-2025-26/segments/1749709481571.41/robotstxt/CC-MAIN-20250620061356-20250620091356-00226.warc.gz"}

@@ -23,3 +23,4 @@
 200808	example.info
 202501	artisticflooring.com.au
 202501	bbc.co.uk
+202506	caba%c3%b1aslito.com.ar
