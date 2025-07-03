@@ -5,6 +5,9 @@ TARGET = cdx
 # Include generated crawls makefile
 include crawls.mk
 
+# Override all target to build combined release
+all: combined
+
 # Build the C extractor
 $(TARGET): cdx.c
 	$(CC) $(CFLAGS) -o $@ $<
