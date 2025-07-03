@@ -22,5 +22,15 @@ search, first seen, last seen).
     10TB of bandwidth, 50% of my 16 CPU cores due to fast C extraction.
 - [ ] Stream in certificate transparency data
   - [ ] Leave it running, publish periodically
-- [ ] Publish raw data files
-  - [ ] IA and link to it
+
+### Publishing
+
+- [ ] Get DOI from Zenodo (concept DOI for project, version DOIs for releases)
+- [ ] Initial release: Historical Common Crawl data (2008-2024)
+- [ ] Distribute to multiple platforms:
+  - [ ] Internet Archive (primary long-term archive)
+  - [ ] HuggingFace Datasets (ML/API access)
+  - [ ] GitHub Releases (samples/extracts)
+  - [ ] Academic Torrents (bulk distribution)
+- [ ] Quarterly updates with new crawl data
+- [ ] Include proper attribution, methodology, and usage docs
