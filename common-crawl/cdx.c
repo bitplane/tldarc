@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define BUFFER_SIZE 65536
+#define BUFFER_SIZE 1048576
 
 // Check if character is valid in a domain name
 #define IS_DOMAIN_CHAR(c) ((c) == '.' || (c) == '-' || (c) == '_' || (c) == '%' || (c) > 127 || \
@@ -78,15 +78,15 @@ int main() {
         if (!*p) continue;
         p++; // skip space
         
-        // Step 2: Extract timestamp (YYYYMM)
-        if (p + 6 > line + strlen(line)) continue;
-        char timestamp[7];
-        memcpy(timestamp, p, 6);
-        timestamp[6] = '\0';
+        // Step 2: Extract timestamp (YYYYMMDD)
+        if (p + 8 > line + strlen(line)) continue;
+        char timestamp[9];
+        memcpy(timestamp, p, 8);
+        timestamp[8] = '\0';
         
         // Validate timestamp
         int ts = atoi(timestamp);
-        if (ts < 197000) continue;
+        if (ts < 19700000) continue;
         
         // Step 3: Find URL
         char *url_pos = strstr(p, "\"url\"");
