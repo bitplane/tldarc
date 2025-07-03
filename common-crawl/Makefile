@@ -36,8 +36,7 @@ test/expected_merge.txt: test/expected_domains.txt make_expected_merge.py
 
 test_merge: test/expected_merge.txt merge_domains.py
 	@echo "Running merge tests..."
-	@bash -c 'diff -u test/expected_merge.txt <(cat test/expected_domains.txt | python3 merge_domains.py /tmp/test_merge.txt && cat /tmp/test_merge.txt) && echo "Merge tests passed!" || { echo "Merge tests failed! See differences above."; exit 1; }'
-	@rm -f /tmp/test_merge.txt
+	@bash -c 'diff -u test/expected_merge.txt <(cat test/expected_domains.txt | python3 merge_domains.py test/expected_merge.txt && cat test/expected_merge.txt) && echo "Merge tests passed!" || { echo "Merge tests failed! See differences above."; exit 1; }'
 
 test: test_cdx test_merge
 
