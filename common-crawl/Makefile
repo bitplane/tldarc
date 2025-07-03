@@ -9,9 +9,9 @@ include crawls.mk
 $(TARGET): cdx.c
 	$(CC) $(CFLAGS) -o $@ $<
 
-# Pattern rules for compression
+# Pattern rules for compression with deduplication
 %.tsv.gz: %.tsv
-	pigz -9 -f $<
+	cat $< | sort -u | pigz -9 > $@
 
 # Add cdx dependency to all .tsv targets from crawls.mk
 %.tsv: $(TARGET)
