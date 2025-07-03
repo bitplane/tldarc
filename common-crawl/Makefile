@@ -16,6 +16,9 @@ $(TARGET): cdx.c
 # Add cdx dependency to all .tsv targets from crawls.mk
 %.tsv: $(TARGET)
 
+# Mark pattern for TSV files as intermediate - they'll be cleaned up after compression
+.INTERMEDIATE: %.tsv
+
 clean:
 	rm -f $(TARGET) *.tsv *.tsv.gz
 
