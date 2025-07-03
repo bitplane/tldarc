@@ -26,15 +26,6 @@ check_tool parallel
 check_tool make
 check_tool gcc
 
-echo
-echo "Required Python modules:"
-if python3 -c "import sys" 2>/dev/null; then
-    echo "  ✓ python3 - working"
-else
-    MISSING="$MISSING python3-working"
-    echo "  ✗ python3 - not working properly"
-fi
-
 if [[ -n "$MISSING" ]]; then
     echo
     echo "❌ Missing dependencies:$MISSING"
