@@ -11,7 +11,7 @@ $(TARGET): cdx.c
 
 # Pattern rules for compression with deduplication
 %.tsv.gz: %.tsv
-	cat $< | sort -u | pigz -9 > $@
+	cat $< | LC_ALL=C sort -u | pigz -9 > $@
 
 # Add cdx dependency to all .tsv targets from crawls.mk
 %.tsv: $(TARGET)
