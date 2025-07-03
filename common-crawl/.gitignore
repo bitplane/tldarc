@@ -5,3 +5,4 @@
 *.tsv
 cdx
 crawls.mk
+test/expected_merge.txt
