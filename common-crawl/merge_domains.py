@@ -58,24 +58,36 @@ def merge_domains(output_file):
     def restart_merge():
         """Restart due to out-of-order input."""
         nonlocal input_f, output_f, file_domain, file_line, last_written
+        nonlocal current_domain, current_first, current_last
         
         print(f"Warning: Out of order domain {stream_domain} < {last_written}, restarting merge", file=sys.stderr)
         
         # Flush any pending domain first
         flush_current()
         
+        # Copy any remaining file entries to temp output (fast-forward to end)
+        if file_domain:
+            output_f.write(file_line)
+            for line in input_f:
+                output_f.write(line)
+        
         # Close files
         output_f.close()
         if input_f:
             input_f.close()
             
-        # Move temp over original and restart
+        # Move temp over original (now contains ALL progress)
         shutil.move(temp_file, output_file)
         
-        # Reopen everything
+        # Reopen everything for fresh merge
         input_f = open(output_file, 'r')
         output_f = open(temp_file, 'w')
         last_written = None
+        
+        # IMPORTANT: Reset accumulator state completely
+        current_domain = None
+        current_first = None
+        current_last = None
         
         # Read first line from file
         file_line = input_f.readline()
