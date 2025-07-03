@@ -6,17 +6,72 @@
 #define BUFFER_SIZE 65536
 
 // Check if character is valid in a domain name
-#define IS_DOMAIN_CHAR(c) ((c) == '.' || (c) == '-' || (c) > 127 || \
+#define IS_DOMAIN_CHAR(c) ((c) == '.' || (c) == '-' || (c) == '_' || (c) == '%' || (c) > 127 || \
                            ((c) >= '0' && (c) <= '9') || \
                            ((c) >= 'A' && (c) <= 'Z') || \
                            ((c) >= 'a' && (c) <= 'z'))
 
+// Line buffering state
+static char line_buffer[BUFFER_SIZE];
+static char *line_start = line_buffer;
+static char *buffer_end = line_buffer;
+
+// Get next complete line, returns NULL on EOF
+static inline char *next_line() {
+    while (1) {
+        // Find end of current line
+        char *line_end = memchr(line_start, '\n', buffer_end - line_start);
+        
+        if (line_end) {
+            // Found complete line
+            *line_end = '\0';
+            char *result = line_start;
+            line_start = line_end + 1;
+            return result;
+        }
+        
+        // No complete line, need more data
+        size_t partial_len = buffer_end - line_start;
+        
+        // Move partial line to start if needed
+        if (partial_len > 0 && line_start != line_buffer) {
+            memmove(line_buffer, line_start, partial_len);
+        }
+        line_start = line_buffer;
+        buffer_end = line_buffer + partial_len;
+        
+        // Check for line too long
+        size_t space_left = BUFFER_SIZE - partial_len;
+        if (space_left <= 1) {
+            fprintf(stderr, "Warning: Line too long, skipping\n");
+            line_start = line_buffer;
+            buffer_end = line_buffer;
+            space_left = BUFFER_SIZE;
+        }
+        
+        // Read more data
+        size_t bytes_read = fread(buffer_end, 1, space_left - 1, stdin);
+        if (bytes_read == 0) {
+            // EOF
+            if (partial_len > 0) {
+                // Process last line without newline
+                buffer_end[0] = '\0';
+                char *result = line_start;
+                line_start = buffer_end;
+                return result;
+            }
+            return NULL;
+        }
+        buffer_end += bytes_read;
+    }
+}
+
 int main() {
-    char buffer[BUFFER_SIZE];
     char domain[2048];
+    char *line;
     
-    while (fgets(buffer, BUFFER_SIZE, stdin)) {
-        char *p = buffer;
+    while ((line = next_line()) != NULL) {
+        char *p = line;
         
         // Step 1: Skip to timestamp (after first space)
         while (*p && *p != ' ') p++;
@@ -24,7 +79,7 @@ int main() {
         p++; // skip space
         
         // Step 2: Extract timestamp (YYYYMM)
-        if (p + 6 > buffer + strlen(buffer)) continue;
+        if (p + 6 > line + strlen(line)) continue;
         char timestamp[7];
         memcpy(timestamp, p, 6);
         timestamp[6] = '\0';
