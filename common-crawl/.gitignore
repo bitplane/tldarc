@@ -1,1 +1,7 @@
 .tld_pattern
+*.tmp
+*.gz
+*.xz
+*.tsv
+cdx
+crawls.mk
