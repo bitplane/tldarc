@@ -194,7 +194,7 @@ int main() {
         }
         
         if (*output_start) {
-            printf("%s\t%s\n", timestamp, output_start);
+            printf("%s\t%s\n", output_start, timestamp);
         }
     }
     
