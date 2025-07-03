@@ -29,6 +29,16 @@ test_cdx: $(TARGET)
 	@echo "Running cdx tests..."
 	@bash -c 'diff -u test/expected_domains.txt <(cat test/test_domains.txt | ./cdx) && echo "All tests passed!" || { echo "Tests failed! See differences above."; exit 1; }'
 
-test: test_cdx
+# Generate expected merge output using naive Python implementation
+test/expected_merge.txt: test/expected_domains.txt make_expected_merge.py
+	@echo "Generating expected merge output..."
+	@cat test/expected_domains.txt | python3 make_expected_merge.py > $@
 
-.PHONY: all clean distclean test_cdx test
+test_merge: test/expected_merge.txt merge_domains.py
+	@echo "Running merge tests..."
+	@bash -c 'diff -u test/expected_merge.txt <(cat test/expected_domains.txt | python3 merge_domains.py /tmp/test_merge.txt && cat /tmp/test_merge.txt) && echo "Merge tests passed!" || { echo "Merge tests failed! See differences above."; exit 1; }'
+	@rm -f /tmp/test_merge.txt
+
+test: test_cdx test_merge
+
+.PHONY: all clean distclean test_cdx test_merge test
