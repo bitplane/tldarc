@@ -7,16 +7,21 @@ tlds.txt:
 	grep -v '^#' | \
 	tr '[:upper:]' '[:lower:]' > $@
 
-# Generate regex pattern from TLD list
-tlds.regex.txt: tlds.txt
+# Convert punycode TLDs to UTF-8
+tlds.utf8.txt: tlds.txt
+	@echo "Converting TLDs to UTF-8..."
+	@cat tlds.txt | python3 convert_utf8.py > $@
+
+# Generate regex pattern from UTF-8 TLD list
+tlds.regex.txt: tlds.utf8.txt
 	@echo "Generating TLD regex pattern..."
-	@cat tlds.txt | \
+	@cat tlds.utf8.txt | \
 	sed 's/^/\\./' | \
 	sed 's/$$/$$/' | \
 	tr '\n' '|' | \
 	sed 's/|$$//' > $@
 
 clean:
-	rm -f tlds.txt tlds.regex.txt
+	rm -f tlds.txt tlds.utf8.txt tlds.regex.txt
 
 .PHONY: clean
