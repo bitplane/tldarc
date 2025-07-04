@@ -20,6 +20,9 @@ search, first seen, last seen).
 - [x] Download commoncrawl indexes and extract domain names
   - takes about 2.5 days on my 1gbps connection, 35GB of output data,
     10TB of bandwidth, 50% of my 16 CPU cores due to fast C extraction.
+- [x] TLD validation and domain filtering
+  - `tld/` directory contains tools to download IANA TLD list and generate regex patterns
+  - Can filter domains with invalid TLDs from collected data
 - [ ] Stream in certificate transparency data
   - [ ] Leave it running, publish periodically
 
