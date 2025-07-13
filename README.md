@@ -28,12 +28,25 @@ search, first seen, last seen).
 
 ### Publishing
 
-- [ ] Get DOI from Zenodo (concept DOI for project, version DOIs for releases)
-- [ ] Initial release: Historical Common Crawl data (2008-2024)
+- [x] Get DOI from Zenodo (concept DOI for project, version DOIs for releases)
+- [x] Initial release: Historical Common Crawl data (2008-2025)
 - [ ] Distribute to multiple platforms:
+  - [x] Zenodo, and get a DOI
   - [ ] Internet Archive (primary long-term archive)
+    - [x] Add to rip's upload queue
   - [ ] HuggingFace Datasets (ML/API access)
-  - [ ] GitHub Releases (samples/extracts)
-  - [ ] Academic Torrents (bulk distribution)
-- [ ] Quarterly updates with new crawl data
-- [ ] Include proper attribution, methodology, and usage docs
+  - [ ] GitHub Releases (archive.org torrent, URL)
+
+## Data
+
+The data can be downloaded [here](https://zenodo.org/records/15872040).
+
+### Citing
+
+Due to the license choice, citation is unnecessary. It's still nice though,
+and I got a DOI and everything.
+
+```text
+Gareth, D. (2025). Common Crawl Domain Names (1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.15872040
+```
+
