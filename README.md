@@ -1,5 +1,7 @@
 # tldarc
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15872040.svg)](https://doi.org/10.5281/zenodo.15872040)
+
 Let's make a list of domains, so we don't have to go cap in hand to registrars
 for zone files, sign agreements and pay them money when we don't even care about
 most of them anyway and don't want to agree to keep things secret.
