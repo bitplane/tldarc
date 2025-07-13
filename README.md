@@ -34,7 +34,7 @@ search, first seen, last seen).
 - [x] Initial release: Historical Common Crawl data (2008-2025)
 - [ ] Distribute to multiple platforms:
   - [x] Zenodo, and get a DOI
-  - [ ] Internet Archive (primary long-term archive)
+  - [x] Internet Archive (primary long-term archive)
     - [x] Add to rip's upload queue
   - [ ] HuggingFace Datasets (ML/API access)
   - [ ] GitHub Releases (archive.org torrent, URL)
