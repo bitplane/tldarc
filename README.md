@@ -18,7 +18,7 @@ search, first seen, last seen).
 
 - [ ] Feed seen and domain data into a database
 - [x] Download commoncrawl indexes and extract domain names
-  - takes about 2.5 days on my 1gbps connection, 35GB of output data,
+  - takes about ~~2.5~~ 8 days on my 1gbps connection, 35GB of output data,
     10TB of bandwidth, 50% of my 16 CPU cores due to fast C extraction.
 - [x] TLD validation and domain filtering
   - `tld/` directory contains tools to download IANA TLD list and generate regex patterns
